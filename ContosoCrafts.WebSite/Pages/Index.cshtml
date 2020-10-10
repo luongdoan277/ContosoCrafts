@@ -13,10 +13,3 @@
 @(await Html.RenderComponentAsync<ProductList>(RenderMode.ServerPrerendered))
 
 <script src="_framework/blazor.server.js"></script>
-
-
-
-@foreach (var product in Model.Products)
-{
-    <h2>@product.Title</h2>
-}
