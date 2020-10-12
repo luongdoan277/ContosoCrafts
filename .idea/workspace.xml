@@ -45,6 +45,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -57,7 +58,7 @@
       <updated>1602154050724</updated>
       <workItem from="1602154051781" duration="53000" />
       <workItem from="1602319936301" duration="19495000" />
-      <workItem from="1602514494702" duration="3552000" />
+      <workItem from="1602514494702" duration="4131000" />
     </task>
     <task id="LOCAL-00001" summary="update README.md">
       <created>1602321468189</created>
