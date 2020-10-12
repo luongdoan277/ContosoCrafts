@@ -86,6 +86,7 @@ We've got some data and a service to manage it, now we'll foreach over our datab
         <h2>@product.Title</h2>
     }
 ```
+![](ContosoCrafts.WebSite/doc/RazorPage.jpg)
 
 ***[Styling a Razor Page](https://www.youtube.com/watch?v=9lJF47kFRcU&list=PLdo4fOcmZ0oW8nviYduHq7bmKode-p8Wy&index=6)***
 
@@ -105,6 +106,8 @@ Make it work, then make it pretty! Let's add some CSS to our Bootstrap template 
     }
 </div>
 ```
+![](ContosoCrafts.WebSite/doc/RazorPage2.jpg)
+
 If it don't display images, you could try update file site.css with the following code ([Download](https://www.youtube.com/redirect?v=9lJF47kFRcU&redir_token=QUFFLUhqbGlkUmV5emowSlhZR0s3UjhGa2w4cmZ4THdCZ3xBQ3Jtc0tuV05YcnJ6andqdk41NVF0cy1RaEpVRnl0SmNVcjFBRUNTb1JGTFRtRkJLOXN2MnBLUHl2V3R6cjQ2M0FhR0Z4NVVQZ19VbjBXNWlEbG1ERHc1ZkhOM3lLVVZpLURwRURyZTlma0VOTUVrdFRkemVXVQ%3D%3D&event=video_description&q=https%3A%2F%2Fgist.github.com%2Fbradygaster%2F3d1fcf43d1d1e73ea5d6c1b5aab40130%23file-site-css))
 
 - Add font style `Yellowtail` and `Nunito` in file `_Layout.cshtml` with the following code:
@@ -116,6 +119,8 @@ If it don't display images, you could try update file site.css with the followin
 ```
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-navbar border-bottom box-shadow mb-3">
 ```
+![](ContosoCrafts.WebSite/doc/RazorPage3.jpg)
+
 ***[Making a Simple API](https://www.youtube.com/watch?v=04IP3Yl8-64&list=PLdo4fOcmZ0oW8nviYduHq7bmKode-p8Wy&index=7)***
 
 We might want our application's data to be available to a mobile app in the future. Lots of web applications output HTML for people to see in their browser, and the best web apps also include a JSON API that allows others consume the data from JavaScript or any other language.
@@ -130,6 +135,9 @@ We might want our application's data to be available to a mobile app in the futu
     });
 ```
 You can test the api is working or not working by running url: `https://localhost:<port>/products`
+
+![](ContosoCrafts.WebSite/doc/API.jpg)
+
 ***[Enhancing Web API](https://www.youtube.com/watch?v=04IP3Yl8-64&list=PLdo4fOcmZ0oW8nviYduHq7bmKode-p8Wy&index=8)***
 
 - Create `ProductsController.cs` in folder `Controllers` with format `API Controller - Empty`.
@@ -176,4 +184,57 @@ You can test the api is working or not working by running url: `https://localhos
 
 Before we got data from the json file, now let's try to do the reverse to put the data in the json file
 
-- 
+- Add service ratting
+
+    - First, add function `AddRating()` in the file `JsonFileProductService.cs` with the following code:
+    ```
+    public void AddRating(string productId, int rating)
+    {
+        var products = GetProducts();
+
+        var query = products.First(x => x.Id == productId);
+
+        if (query.Ratings == null)
+        {
+            query.Ratings = new int[] { rating };
+        }
+        else
+        {
+            var ratings = query.Ratings.ToList();
+            ratings.Add(rating);
+            query.Ratings = ratings.ToArray();
+        }
+
+        using (var outputStream = File.OpenWrite(JsonFileName))
+        {
+            JsonSerializer.Serialize<IEnumerable<Product>>(
+                new Utf8JsonWriter(outputStream, new JsonWriterOptions
+                {
+                    SkipValidation = true,
+                    Indented = true
+                }),
+                products
+            );
+        }
+    }
+    ```
+    - Second, add controller in `ProductController.cs` with the following code:
+    ```
+    [Route("Rate")]
+    [HttpGet]
+    public ActionResult Get(
+        [FromQuery] string ProductId, 
+        [FromQuery] int Rating)
+    {
+        ProductService.AddRating(ProductId, Rating);
+        return Ok();
+    }
+    ```
+    - Third, you can test by url: `https://localhost:<port>/products/rate?ProductId=<id>$rating=<int>`
+    next check file `product.json`
+
+***[Razor Components](https://www.youtube.com/watch?v=R23v4lgHYQI&list=PLdo4fOcmZ0oW8nviYduHq7bmKode-p8Wy&index=10)***
+
+- Create folder `Component` 
+- In folder `Component` create file `Razor Component` with name `ProductList.razor`
+- Move 
