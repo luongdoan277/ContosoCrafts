@@ -237,4 +237,205 @@ Before we got data from the json file, now let's try to do the reverse to put th
 
 - Create folder `Component` 
 - In folder `Component` create file `Razor Component` with name `ProductList.razor`
-- Move 
+- Instead of using in `Index.cshtml`:
+```
+    <div class="card-columns">
+        @foreach (var product in ProductService.GetProducts())
+        {
+            <div class="card">
+                <div class="card-img" style="background-image: url('@product.Image');"></div>
+                <div class="card-body">
+                    <h5 class="card-title">@product.Title</h5>
+                </div>
+            </div>
+        }
+    </div>
+```
+- We will use file `ProductList.razor` with the following code:
+```
+    @using ContosoCrafts.WebSite.Models
+    @using ContosoCrafts.WebSite.Services
+    @using Microsoft.AspNetCore.Components.Web
+    @inject JsonFileProductService ProductService
+    
+    <div class="card-columns">
+        @foreach (var product in ProductService.GetProducts())
+        {
+            <div class="card">
+                <div class="card-img" style="background-image: url('@product.Image');"></div>
+                <div class="card-body">
+                    <h5 class="card-title">@product.Title</h5>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">
+                        <button @onclick="(e => SelectProduct(product.Id))"
+                                data-toggle="modal" data-target="#productModal" class="btn btn-primary">
+                            More Info
+                        </button>
+                    </small>
+                </div>
+            </div>
+        }
+    </div>
+    
+    @code 
+    {
+        Product selectedProduct;
+        string selectedProductId;
+    
+        void SelectProduct(string productId)
+        {
+            selectedProductId = productId;
+            selectedProduct = ProductService.GetProducts().First(x => x.Id == productId);
+            GetCurrentRating();
+        }
+    }
+```
+- Next, edit `Startup.cs`:
+```
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddRazorPages();
+        services.AddServerSideBlazor();
+        services.AddControllers();
+        services.AddTransient<JsonFileProductService>();
+    }
+....
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapRazorPages();
+        endpoints.MapControllers();
+        endpoints.MapBlazorHub();
+    });
+```
+- Add script and mapping file `ProductList.razor` in file `Index.cshtml`:
+```
+    @page
+    @using ContosoCrafts.WebSite.Components
+    @model IndexModel
+    @{
+        ViewData["Title"] = "Home page";
+    }
+    
+    <div class="text-center">
+        <h1 class="display-4">Contoso Crafts</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
+    
+    @(await Html.RenderComponentAsync<ProductList>(RenderMode.ServerPrerendered))
+    
+    <script src="_framework/blazor.server.js"></script>
+```
+
+***[Structure](https://www.youtube.com/watch?v=wA-3FA2kbpA&list=PLdo4fOcmZ0oW8nviYduHq7bmKode-p8Wy&index=11)***
+
+- Add popup detail when click button `More info`:
+```
+    @if (selectedProduct != null)
+    {
+        <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="productTitle">@selectedProduct.Title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-img" style="background-image: url('@selectedProduct.Image');">
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">@selectedProduct.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+```
+
+![](ContosoCrafts.WebSite/doc/RazorPage4.jpg)
+
+***[Interactivity](https://www.youtube.com/watch?v=IhoDDZBW6dc&list=PLdo4fOcmZ0oW8nviYduHq7bmKode-p8Wy&index=12)***
+
+- Add ..... in `ProductList.cs`:
+```
+    @code
+    {
+        Product selectedProduct;
+        string selectedProductId;
+    
+        void SelectProduct(string productId)
+        {
+            selectedProductId = productId;
+            selectedProduct = ProductService.GetProducts().First(x => x.Id == productId);
+            GetCurrentRating();
+        }
+    
+        int currentRating = 0;
+        int voteCount = 0;
+        string voteLabel;
+    
+        void GetCurrentRating()
+        {
+            if (selectedProduct.Ratings == null)
+            {
+                currentRating = 0;
+                voteCount = 0;
+            }
+            else
+            {
+                voteCount = selectedProduct.Ratings.Count();
+                voteLabel = voteCount > 1 ? "Votes" : "Vote";
+                currentRating = selectedProduct.Ratings.Sum() / voteCount;
+            }
+    
+            System.Console.WriteLine($"Current rating for {selectedProduct.Id}: {currentRating}");
+        }
+    
+        void SubmitRating(int rating)
+        {
+            System.Console.WriteLine($"Rating received for {selectedProduct.Id}: {rating}");
+            ProductService.AddRating(selectedProductId, rating);
+            SelectProduct(selectedProductId);
+        }
+    }
+```
+and 
+```
+    <div class="modal-footer">
+        @if (voteCount == 0)
+        {
+            <span>Be the first to vote!</span>
+        }
+        else
+        {
+            <span>@voteCount @voteLabel</span>
+        }
+        @for (int i = 1; i < 6; i++)
+        {
+            var currentStar = i;
+            if (i <= currentRating)
+            {
+                <span class="fa fa-star checked" @onclick="(e => SubmitRating(currentStar))"></span>
+            }
+            else
+            {
+                <span class="fa fa-star" @onclick="(e => SubmitRating(currentStar))"></span>
+            }
+        }
+    </div>
+
+    .......
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+```
+![](ContosoCrafts.WebSite/doc/RazorPage5.jpg)
+

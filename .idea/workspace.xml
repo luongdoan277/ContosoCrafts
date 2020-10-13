@@ -20,7 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe00a637-d70c-4167-a79b-e0a535e896e2" name="Default Changelist" comment="update README.md">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/ContosoCrafts/DesignTimeBuild/.dtbcache.v2" beforeDir="false" afterPath="$PROJECT_DIR$/.vs/ContosoCrafts/DesignTimeBuild/.dtbcache.v2" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.vs/ContosoCrafts/v16/.suo" beforeDir="false" afterPath="$PROJECT_DIR$/.vs/ContosoCrafts/v16/.suo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ContosoCrafts.WebSite/Controllers/ProductsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ContosoCrafts.WebSite/Controllers/ProductsController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ContosoCrafts.WebSite/obj/Debug/netcoreapp3.1/ContosoCrafts.WebSite.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ContosoCrafts.WebSite/obj/Debug/netcoreapp3.1/ContosoCrafts.WebSite.csprojAssemblyReference.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
@@ -58,7 +61,8 @@
       <updated>1602154050724</updated>
       <workItem from="1602154051781" duration="53000" />
       <workItem from="1602319936301" duration="19495000" />
-      <workItem from="1602514494702" duration="4131000" />
+      <workItem from="1602514494702" duration="4196000" />
+      <workItem from="1602557614231" duration="3881000" />
     </task>
     <task id="LOCAL-00001" summary="update README.md">
       <created>1602321468189</created>
@@ -121,6 +125,10 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="92" y="92" width="1736" height="866" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1602320806809" />
+    <state x="777" y="214" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1602558046094">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="777" y="214" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1050@0.0.1920.1050" timestamp="1602558046094" />
     <state x="777" y="439" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602320215414">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
